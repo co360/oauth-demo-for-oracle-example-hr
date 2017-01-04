@@ -5,18 +5,28 @@ apex.oracle.comのOAuth2.0で保護されたoracle.example.hr APIにアクセス
 # 利用方法
 
 まずこちらのQiitaの記事にある通り、apex.oracle.com側でAPIの権限設定、およびクライアントの登録をおこないます。
+http://qiita.com/nkjm/items/38da1b6816f6f6ac8aca
 
-デモアプリをクローンします。
+デモアプリをクローンし、npmパッケージをインストールします。
 
 ```
 $ git clone https://github.com/nkjm/oauth-demo-for-oracle-example-hr.git
+$ cd oauth-demo-for-oracle-example-hr/
+$ npm install
 ```
 
 config.jsファイルを編集し、WORKSPACE, CLIENT_ID, CLIENT_SECRETをご自身の環境の値に置き換えます。
 
 ```
-$ cd oauth-demo-for-oracle-example-hr/
 $ vi config.js
+```
+
+```javascript:config.js
+'use strict';
+
+exports.CLIENT_ID = 'あなたのCLIENT_ID';
+exports.CLIENT_SECRET = 'あなたのCLIENT_SECRET';
+exports.WORKSPACE = 'あなたのAPEXワークスペース';
 ```
 
 Nodeアプリを起動します。
