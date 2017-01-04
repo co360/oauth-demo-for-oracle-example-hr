@@ -1,0 +1,30 @@
+{
+  "name": "oauth-demo-for-oracle-example-hr",
+  "version": "1.0.0",
+  "description": "OAuth demonstration for oracle.example.hr API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nkjm/oauth-demo-for-oracle-example-hr.git"
+  },
+  "keywords": [
+    "OAuth",
+    "Oracle",
+    "APEX"
+  ],
+  "author": "Kazuki Nakajima",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nkjm/oauth-demo-for-oracle-example-hr/issues"
+  },
+  "homepage": "https://github.com/nkjm/oauth-demo-for-oracle-example-hr#readme",
+  "dependencies": {
+    "express": "^4.14.0",
+    "express-session": "^1.14.2",
+    "oracle-apex-oauth": "^1.0.3",
+    "request": "^2.79.0"
+  }
+}
