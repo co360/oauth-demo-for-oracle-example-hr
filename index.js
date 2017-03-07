@@ -5,6 +5,7 @@ const oauth = require('oracle-apex-oauth');
 const app = express();
 const session = require('express-session');
 const request = require('request');
+const debug = require('debug')("index");
 const config = require('./config');
 
 app.use(session({
@@ -15,7 +16,7 @@ app.use(session({
 
 const port = (process.env.PORT || 5000);
 const server = app.listen(port, function(){
-    console.log('Server is running on port ' + port);
+    debug('Server is running on port ' + port);
 });
 
 app.use('/oauth', oauth({
@@ -29,6 +30,7 @@ app.use('/oauth', oauth({
 
 app.get('/', function(req, res, next){
     if (!req.session.oauth){
+        debug("OAuth Token not found. Redirecting to authentication url.");
         res.redirect('/oauth');
         return;
     }
@@ -37,14 +39,11 @@ app.get('/', function(req, res, next){
 });
 
 app.get('/employees', function(req, res, next){
-    if (!req.session.oauth){
-        res.status(401).send('Unauthorized.');
-        return;
-    }
-
     let headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + req.session.oauth.access_token
+        'Content-Type': 'application/json'
+    }
+    if (req.session && req.session.oauth && req.session.oauth.access_token){
+        headers.Authorization = "Bearer " + req.session.oauth.access_token;
     }
     let url = 'https://apex.oracle.com/pls/apex/' + config.WORKSPACE + '/hr/employees/';
     request({
@@ -54,8 +53,12 @@ app.get('/employees', function(req, res, next){
         json: true
     }, function(error, response, body){
         if (error || response.statusCode != 200){
-            res.status(response.statusCode).send('Failed to get employees.');
-            return;
+            debug("Failed to get employees.");
+            if (response.statusCode == 401){
+                let body = "<html><body>Authentication Required<br/><a href='/oauth'>Login</a></body></html>";
+                return res.status(response.statusCode).send(body);
+            }
+            return res.status(response.statusCode).send(body);
         }
         res.json(body);
     });
